@@ -1,0 +1,401 @@
+/* ======== GLOBAL STYLES ======== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f7f9fc;
+  color: #333;
+}
+
+/* ======== NAVBAR ======== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: #0b3d2e;
+  color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.logo img {
+  height: 45px;
+}
+
+.navbar nav a {
+  margin-left: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar nav a.active {
+  color: #c9a227;
+  font-weight: 600;
+}
+
+.nav-btn {
+  background: #c9a227;
+  padding: 8px 18px;
+  border-radius: 20px;
+  color: #000 !important;
+  transition: background 0.3s;
+}
+
+.nav-btn:hover {
+  background: #d4b347;
+}
+
+/* ======== BUTTONS ======== */
+.btn {
+  padding: 12px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.primary {
+  background: #c9a227;
+  color: #000;
+}
+
+.primary:hover {
+  background: #d4b347;
+}
+
+.secondary {
+  background: #0b3d2e;
+  color: #fff;
+}
+
+.secondary:hover {
+  background: #0a2f26;
+}
+
+/* ======== CTA SECTION ======== */
+.cta {
+  padding: 60px 40px;
+  text-align: center;
+  background: #c9a227;
+  color: #000;
+}
+
+.cta h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.cta p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/* ======== FOOTER ======== */
+footer {
+  background: #0b3d2e;
+  color: #fff;
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 4px solid #c9a227;
+}
+
+footer p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+/* ======== PRODUCTS PAGE STYLES ======== */
+
+/* ======== PRODUCTS HERO ======== */
+.products-hero {
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+              url('images/system.png') center/cover;
+  padding: 100px 50px;
+  text-align: center;
+  color: #fff;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.products-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.products-hero p {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+/* ======== PRODUCTS SECTION ======== */
+.products-section {
+  padding: 60px 50px;
+  background: #f7f9fc;
+}
+
+.products-section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  color: #0b3d2e;
+  font-weight: 600;
+}
+
+/* ======== PRODUCTS GRID ======== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+/* ======== PRODUCT CARD ======== */
+.product-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.product-image {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.product-card h3 {
+  color: #0b3d2e;
+  margin: 10px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.product-card p {
+  color: #666;
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+
+.product-desc {
+  font-style: italic;
+  color: #777;
+  margin: 12px 0;
+  line-height: 1.5;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  color: #c9a227;
+  font-weight: 600;
+  margin: 15px 0;
+}
+
+/* ======== BENEFITS SECTION ======== */
+.benefits-section {
+  padding: 60px 50px;
+  background: #eef6f1;
+}
+
+.benefits-section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  color: #0b3d2e;
+  font-weight: 600;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.benefit-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-card h3 {
+  color: #0b3d2e;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.benefit-card p {
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ======== HOW TO USE SECTION ======== */
+.how-to-use {
+  padding: 60px 50px;
+  background: #f7f9fc;
+}
+
+.how-to-use h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  color: #0b3d2e;
+  font-weight: 600;
+}
+
+.usage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.usage-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-top: 4px solid #c9a227;
+  transition: transform 0.3s;
+}
+
+.usage-card:hover {
+  transform: translateY(-5px);
+}
+
+.usage-card h3 {
+  color: #0b3d2e;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.usage-card p {
+  color: #666;
+  line-height: 1.5;
+}
+
+
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 15px 20px;
+  }
+
+  .navbar nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+  }
+
+  .navbar nav a {
+    margin: 8px 0;
+  }
+
+  .cta {
+    padding: 40px 20px;
+  }
+
+  .cta h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta p {
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .products-hero {
+    padding: 60px 20px;
+    min-height: auto;
+  }
+
+  .products-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .products-hero p {
+    font-size: 1rem;
+  }
+
+  .products-section {
+    padding: 40px 20px;
+  }
+
+  .products-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-card {
+    padding: 15px;
+  }
+
+  .product-image {
+    font-size: 2rem;
+  }
+
+  .benefits-section {
+    padding: 40px 20px;
+  }
+
+  .benefits-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .how-to-use {
+    padding: 40px 20px;
+  }
+
+  .how-to-use h2 {
+    font-size: 1.5rem;
+  }
+
+  .usage-grid {
+    grid-template-columns: 1fr;
+  }
+}

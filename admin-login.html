@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login | PrakritiCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to PrakritiCare admin dashboard">
+  <link rel="stylesheet" href="admin-login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="logo">
+    <img src="images/logo.png" alt="PrakritiCare Logo">
+    <span>PrakritiCare</span>
+  </div>
+  <nav>
+    <a href="Main Page.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="system.html">System</a>
+    <a href="herbs.html">Herbs</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<!-- ================= ADMIN LOGIN HERO ================= -->
+<section class="login-hero">
+  <h1>Admin Dashboard</h1>
+  <p>Secure access for administrators only</p>
+</section>
+
+<!-- ================= ADMIN LOGIN FORM ================= -->
+<section class="login-container">
+  <div class="login-wrapper">
+    <div class="login-card admin-card">
+      <div class="security-badge">🔒 Secure Login</div>
+      <h2>Admin Access</h2>
+      <p class="admin-subtitle">Enter your credentials to access the management dashboard</p>
+      
+      <form class="login-form">
+        <div class="form-group">
+          <label for="admin-email">Admin Email *</label>
+          <input type="email" id="admin-email" name="admin-email" required placeholder="admin@prakriti.care">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+
+        <div class="form-group checkbox">
+          <input type="checkbox" id="remember" name="remember">
+          <label for="remember">Remember this device</label>
+        </div>
+
+        <button type="submit" class="btn primary full-width" id="submitBtn">Login to Dashboard</button>
+      </form>
+
+      <div id="message" class="message"></div>
+
+      <div class="security-info">
+        <p>🔐 This login is monitored for security. All access attempts are logged.</p>
+      </div>
+
+      <div class="auth-links">
+        <p><a href="#forgot-password"></a></p>
+        <p><a href="login-select.html">Go back</a></p>
+      </div>
+    </div>
+
+    <div class="admin-features">
+      <h3>Admin Features</h3>
+      <ul>
+        <li>📊 View analytics & reports</li>
+        <li>👥 Manage users & accounts</li>
+        <li>💊 Update herb database</li>
+        <li>📋 Review recommendations</li>
+        <li>⚙️ System configuration</li>
+        <li>📝 Content management</li>
+        <li>🔔 User notifications</li>
+        <li>🛡️ Security settings</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 PrakritiCare | Ayurvedic Drug Recommendation System</p>
+  <p>Developed using 🌿 Ayurveda & 💻 Technology</p>
+</footer>
+
+<script>
+  const API_BASE_URL = 'http://localhost/Prakriti Care/api';
+
+  // Auto-populate admin email if remembered
+  window.addEventListener('load', function() {
+    const rememberEmail = localStorage.getItem('rememberEmail');
+    if (rememberEmail) {
+      document.getElementById('admin-email').value = rememberEmail;
+      document.getElementById('remember').checked = true;
+    }
+  });
+
+  document.querySelector('.login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const adminEmail = document.getElementById('admin-email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const messageDiv = document.getElementById('message');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Clear previous messages
+    messageDiv.textContent = '';
+    messageDiv.className = 'message';
+
+    // Validation
+    if (!adminEmail || !password) {
+      messageDiv.textContent = 'Please fill in all required fields (Email, Password)';
+      messageDiv.classList.add('error');
+      return;
+    }
+
+    // Set loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Logging in...';
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/admin-login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: adminEmail,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        // Store token and admin data
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('adminId', data.admin.id);
+        localStorage.setItem('adminName', data.admin.full_name || data.admin.username || 'Admin');
+        localStorage.setItem('adminEmail', data.admin.email);
+        localStorage.setItem('userType', 'admin');
+
+        // Remember username if checked
+        if (document.getElementById('remember').checked) {
+          localStorage.setItem('rememberEmail', adminEmail);
+        } else {
+          localStorage.removeItem('rememberEmail');
+        }
+
+        // Show success message
+        const adminDisplayName = localStorage.getItem('adminName') || 'Admin';
+        messageDiv.textContent = `Welcome back, ${adminDisplayName}! Redirecting to dashboard...`;
+        messageDiv.classList.add('success');
+
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'admin-dashboard.html';
+        }, 2000);
+      } else {
+        messageDiv.textContent = data.message || 'Invalid admin credentials. Please try again.';
+        messageDiv.classList.add('error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Login to Dashboard';
+      }
+    } catch (error) {
+      messageDiv.textContent = 'Error connecting to the server. Make sure Apache and MySQL are running in XAMPP';
+      messageDiv.classList.add('error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Login to Dashboard';
+    }
+  });
+</script>
+
+</body>
+</html>

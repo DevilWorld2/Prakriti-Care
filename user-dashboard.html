@@ -1,0 +1,760 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard | PrakritiCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="User Dashboard - View your health profile and recommendations">
+  <link rel="stylesheet" href="user-dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= DASHBOARD HEADER ================= -->
+<header class="dashboard-header">
+  <div class="header-left">
+    <div class="logo-small">
+      <span>🌿</span>
+      <span>PrakritiCare</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="user-info">
+      <span class="user-greeting" id="userGreeting">Welcome back!</span>
+      <button id="logoutBtn" class="logout-btn" onclick="logout(event)">Logout</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= DASHBOARD CONTAINER ================= -->
+<div class="dashboard-wrapper">
+  
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="dashboard-sidebar">
+    <nav class="sidebar-nav">
+      <a href="#dashboard" class="nav-item active" data-section="dashboard">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#recommendations" class="nav-item" data-section="recommendations">
+        <span class="icon">💊</span>
+        <span>Recommendations</span>
+      </a>
+      <a href="#recommendation-history" class="nav-item" data-section="recommendation-history">
+        <span class="icon">📜</span>
+        <span>History</span>
+      </a>
+      <a href="#settings" class="nav-item" data-section="settings">
+        <span class="icon">⚙️</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="dashboard-main">
+    
+    <!-- ================= DASHBOARD SECTION ================= -->
+    <section id="dashboard" class="content-section active">
+      <div class="section-header">
+        <h1>Dashboard</h1>
+        <p>Your personalized wellness overview</p>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Profile Card -->
+        <div class="card profile-card">
+          <h3>👤 Your Profile</h3>
+          <div class="profile-info">
+            <p><strong>Name:</strong> <span id="profileName">Loading...</span></p>
+            <p><strong>Age:</strong> <span id="profileAge">--</span> years</p>
+            <p><strong>Email:</strong> <span id="profileEmail">--</span></p>
+            <p><strong>Member Since:</strong> <span id="memberSince">--</span></p>
+          </div>
+          <button class="btn-small secondary" onclick="editProfile()">Edit Profile</button>
+        </div>
+
+        <!-- Symptom Search -->
+        <div class="card search-card">
+          <h3>🔍 Search by Symptoms or Condition</h3>
+          <div class="search-form">
+            <input id="symptomQuery" type="text" placeholder="e.g., headache" />
+            <button class="btn-small primary" id="symptomSearchBtn">Search</button>
+            <button class="btn-small secondary" id="symptomClearBtn" type="button">Clear</button>
+          </div>
+          <div id="symptomSearchResults" class="search-results">
+            <p class="hint">Type your symptoms and press Search to get herbal recommendations.</p>
+          </div>
+        </div>
+
+        <!-- Recent Recommendation -->
+        <div class="card recent-card">
+          <h3>💊 Recent Recommendation</h3>
+          <div class="recommendation-preview">
+            <p><strong>Condition:</strong> <span id="recentCondition">No data</span></p>
+            <p><strong>Recommended Herb:</strong> <span id="recentHerb">No data</span></p>
+            <p><strong>Dosage:</strong> <span id="recentDosage">--</span></p>
+            <p><strong>Status:</strong> <span id="recentStatus" class="status-inactive">--</span></p>
+          </div>
+          <a href="#recommendations" class="link-btn">View All →</a>
+        </div>
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn primary" id="getAssessmentBtn">Get New Assessment</button>
+      </div>
+    </section>
+
+    <!-- ================= RECOMMENDATIONS SECTION ================= -->
+    <section id="recommendations" class="content-section">
+      <div class="section-header">
+        <h1>My Recommendations</h1>
+        <p>Personalized herbal recommendations based on your health profile</p>
+        <div class="section-tabs">
+          <button class="tab-btn active" data-filter="active">Active</button>
+          <button class="tab-btn" data-filter="completed">Completed</button>
+          <button class="tab-btn" data-filter="all">All</button>
+        </div>
+      </div>
+
+      <div class="recommendations-list" id="recommendationsList">
+        <!-- Dynamically populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- ================= RECOMMENDATION HISTORY SECTION ================= -->
+    <section id="recommendation-history" class="content-section">
+      <div class="section-header">
+        <h1>Recommendation History</h1>
+        <p>Track your completed recommendations and progress</p>
+      </div>
+
+      <div class="history-timeline" id="historyTimeline">
+        <!-- Dynamically populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- ================= SETTINGS SECTION ================= -->
+    <section id="settings" class="content-section">
+      <div class="section-header">
+        <h1>Settings</h1>
+        <p>Manage your account preferences and privacy</p>
+      </div>
+
+      <div class="journey-container">
+        <div class="journey-milestone">
+          <div class="milestone-marker completed">✓</div>
+          <div class="milestone-content">
+            <h4>Account Created</h4>
+            <p>Dec 20, 2025 - Started your wellness journey</p>
+          </div>
+        </div>
+
+        <div class="journey-milestone">
+          <div class="milestone-marker completed">✓</div>
+          <div class="milestone-content">
+            <h4>First Assessment Completed</h4>
+            <p>Dec 22, 2025 - Personalized health profile completed</p>
+          </div>
+        </div>
+
+        <div class="journey-milestone">
+          <div class="milestone-marker completed">✓</div>
+          <div class="milestone-content">
+            <h4>First Recommendation Received</h4>
+            <p>Dec 25, 2025 - 8 personalized herb recommendations</p>
+          </div>
+        </div>
+
+        <div class="journey-milestone">
+          <div class="milestone-marker completed">✓</div>
+          <div class="milestone-content">
+            <h4>2 Weeks Milestone</h4>
+            <p>Jan 5, 2026 - 92% compliance with recommendations</p>
+          </div>
+        </div>
+
+        <div class="journey-milestone">
+          <div class="milestone-marker active">→</div>
+          <div class="milestone-content">
+            <h4>Monthly Review (In Progress)</h4>
+            <p>Feb 21, 2026 - Track changes and adjust Plan</p>
+          </div>
+        </div>
+
+        <div class="journey-milestone">
+          <div class="milestone-marker">📍</div>
+          <div class="milestone-content">
+            <h4>90-Day Assessment</h4>
+            <p>Coming Soon - Comprehensive wellness review</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SETTINGS SECTION ================= -->
+    <section id="settings" class="content-section">
+      <div class="section-header">
+        <h1>Settings</h1>
+        <p>Manage your account preferences and privacy</p>
+      </div>
+
+      <div class="settings-container">
+        <div class="settings-group">
+          <h3>📧 Email & Notifications</h3>
+          <div class="setting-item">
+            <label>
+              <input type="checkbox" checked> Recommendation updates
+            </label>
+          </div>
+          <div class="setting-item">
+            <label>
+              <input type="checkbox" checked> Weekly wellness tips
+            </label>
+          </div>
+          <div class="setting-item">
+            <label>
+              <input type="checkbox"> Monthly newsletter
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <h3>🔐 Privacy & Security</h3>
+          <div class="setting-item">
+            <p>Change Password</p>
+            <button id="updatePasswordBtn" class="btn-small secondary">Update Password</button>
+          </div>
+          <div class="setting-item">
+            <p>Two-Factor Authentication</p>
+            <button id="enable2FABtn" class="btn-small secondary">Enable 2FA</button>
+          </div>
+          <div class="setting-item">
+            <label>
+              <input type="checkbox" checked> Share health data for research
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <h3>🌍 Preferences</h3>
+          <div class="setting-item">
+            <label>Language: 
+              <select>
+                <option>English</option>
+                <option>Hindi</option>
+                <option>Spanish</option>
+              </select>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label>Theme:
+              <select>
+                <option>Light</option>
+                <option>Dark</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-group danger">
+          <h3>⚠️ Account Management</h3>
+          <button id="downloadDataBtn" class="btn-small secondary">Download My Data</button>
+          <button id="deleteAccountBtn" class="btn-small danger">Delete Account</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 PrakritiCare | Ayurvedic Drug Recommendation System</p>
+  <p>Developed using 🌿 Ayurveda & 💻 Technology</p>
+</footer>
+
+<script>
+  // API helpers and dashboard logic using backend endpoints
+  const API_BASE_URL = 'http://localhost/Prakriti Care/api';
+
+  function getAuthToken() {
+    return localStorage.getItem('authToken');
+  }
+
+  function apiFetch(path, options = {}) {
+    options.headers = options.headers || {};
+    options.headers['Content-Type'] = 'application/json';
+    const token = getAuthToken();
+    if (token) {
+      options.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return fetch(API_BASE_URL + path, options).then(res => res.json());
+  }
+
+  async function initDashboard() {
+    const token = getAuthToken();
+    const userType = localStorage.getItem('userType');
+    if (!token || userType !== 'user') {
+      window.location.href = 'login-select.html';
+      return;
+    }
+
+    try {
+      const profileRes = await apiFetch('/auth/me');
+      if (profileRes.success) {
+        const profile = profileRes.data || profileRes.user || profileRes;
+        populateProfile(profile);
+      } else {
+        throw new Error(profileRes.message || 'Unable to load profile');
+      }
+
+      await loadRecommendations('active');
+      await loadRecommendationHistory();
+      await loadAssessments();
+      startRealtimeUpdates();
+    } catch (err) {
+      console.error('Dashboard init error:', err);
+      logout();
+    }
+  }
+
+  function populateProfile(user) {
+    const fullname = user.fullname || user.name || 'User';
+    const email = user.email || '--';
+    const age = user.age || user.userAge || '--';
+    const memberSinceRaw = user.createdAt || user.memberSince || user.created_at || null;
+
+    document.getElementById('userGreeting').textContent = `Welcome back, ${fullname}!`;
+    document.getElementById('profileName').textContent = fullname;
+    document.getElementById('profileEmail').textContent = email;
+    document.getElementById('profileAge').textContent = age;
+    document.getElementById('memberSince').textContent = memberSinceRaw ? new Date(memberSinceRaw).toLocaleDateString() : '--';
+
+    // store some data locally for quick access
+    localStorage.setItem('userName', fullname);
+    localStorage.setItem('userEmail', email);
+  }
+
+  async function loadRecommendations(filter = 'active') {
+    const res = await apiFetch('/recommendations');
+    if (!res.success) return;
+    const recs = res.data || [];
+
+    let html = '';
+    recs.forEach(rec => {
+      // rec.status is expected to be one of active/completed/discontinued
+      const status = rec.status || 'active';
+      if (filter === 'all' || filter === status) {
+        const herbs = Array.isArray(rec.herbs) ? rec.herbs.map(h => h.name || h).join(', ') : (rec.herb_name || '--');
+
+        html += `
+          <div class="recommendation-item">
+            <div class="rec-header">
+              <h3>${rec.condition || rec.herb_name || 'Herb Recommendation'}</h3>
+              <span class="tag ${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span>
+            </div>
+            <p><strong>Herbs:</strong> ${herbs}</p>
+            <p><strong>Dosage:</strong> ${rec.dosage || '--'}</p>
+            <p><strong>Duration:</strong> ${rec.duration || '--'}</p>
+            <p><strong>Status:</strong> <span class="status-${status}">${status}</span></p>
+            ${status === 'active' ? 
+              `<button class="btn-small primary" onclick="completeRecommendation('${rec.id || rec._id}')">Mark as Completed</button>` :
+              `<button class="btn-small secondary" onclick="reopenRecommendation('${rec.id || rec._id}')">Mark as Active</button>`
+            }
+          </div>
+        `;
+      }
+    });
+
+    document.getElementById('recommendationsList').innerHTML = html || '<p>No recommendations found.</p>';
+    updateRecentRecommendation(recs);
+  }
+
+  function updateRecentRecommendation(recs) {
+    const recentCondition = document.getElementById('recentCondition');
+    const recentHerb = document.getElementById('recentHerb');
+    const recentDosage = document.getElementById('recentDosage');
+    const recentStatus = document.getElementById('recentStatus');
+
+    if (!recs || recs.length === 0) {
+      if (recentCondition) recentCondition.textContent = 'No recommendations yet';
+      if (recentHerb) recentHerb.textContent = '--';
+      if (recentDosage) recentDosage.textContent = '--';
+      if (recentStatus) {
+        recentStatus.textContent = 'None';
+        recentStatus.className = '';
+      }
+      return;
+    }
+
+    const activeRec = recs.find(r => r.status === 'active') || recs[0];
+    const status = (activeRec && activeRec.status) ? activeRec.status : 'pending';
+    const herbs = activeRec ? (Array.isArray(activeRec.herbs) ? activeRec.herbs.map(h => h.name || h).join(', ') : (activeRec.herb_name || '--')) : '--';
+
+    if (recentCondition) recentCondition.textContent = activeRec ? (activeRec.condition || activeRec.herb_name || 'Herb Recommendation') : 'No data';
+    if (recentHerb) recentHerb.textContent = herbs;
+    if (recentDosage) recentDosage.textContent = activeRec ? (activeRec.dosage || '--') : '--';
+    if (recentStatus) {
+      recentStatus.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+      recentStatus.className = status === 'active' ? 'status-active' : 'status-' + status;
+    }
+  }
+
+  async function completeRecommendation(recId) {
+    const res = await apiFetch(`/recommendations/${recId}/complete`, { method: 'PUT' });
+    if (res.success) {
+      await loadRecommendations('active');
+      await loadRecommendationHistory();
+    } else {
+      alert('Failed to update recommendation');
+    }
+  }
+
+  async function reopenRecommendation(recId) {
+    // backend doesn't provide explicit reopen endpoint; update status manually
+    const res = await apiFetch(`/recommendations/${recId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'active' })
+    });
+    if (res.success) {
+      await loadRecommendations('active');
+      await loadRecommendationHistory();
+    } else {
+      alert('Failed to update recommendation');
+    }
+  }
+
+  async function loadRecommendationHistory() {
+    const res = await apiFetch('/recommendations');
+    if (!res.success) return;
+    const recs = res.data || [];
+
+    const active = recs.filter(r => r.status === 'active');
+    const completed = recs.filter(r => r.status === 'completed');
+
+    let html = '';
+    if (active.length === 0 && completed.length === 0) {
+      html = '<p class="no-history">No recommendations yet. Start your wellness journey!</p>';
+    } else {
+      if (active.length > 0) {
+        html += '<h3>Active / Saved Prescriptions</h3>';
+        active.forEach((rec, index) => {
+          const date = rec.created_at ? new Date(rec.created_at).toLocaleDateString() : '';
+          html += `
+            <div class="history-item">
+              <div class="history-marker">${index + 1}</div>
+              <div class="history-content">
+                <h4>⏳ ${rec.condition || rec.herb_name || 'Herb Plan'}</h4>
+                <p>Saved on ${date}</p>
+                <p class="status-badge active">Active</p>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      if (completed.length > 0) {
+        html += '<h3>Completed Recommendations</h3>';
+        completed.forEach((rec, index) => {
+          const date = rec.completed_at ? new Date(rec.completed_at).toLocaleDateString() : (rec.updatedAt ? new Date(rec.updatedAt).toLocaleDateString() : '');
+          html += `
+            <div class="history-item">
+              <div class="history-marker">${index + 1}</div>
+              <div class="history-content">
+                <h4>✓ ${rec.condition || rec.herb_name || 'Herb Plan'}</h4>
+                <p>Completed on ${date}</p>
+                <p class="status-badge completed">Completed</p>
+              </div>
+            </div>
+          `;
+        });
+      }
+    }
+
+    document.getElementById('historyTimeline').innerHTML = html;
+  }
+
+  // Load user assessments
+  async function loadAssessments() {
+    const res = await apiFetch('/assessments');
+    if (!res.success) return;
+    const list = res.data || [];
+    const container = document.querySelector('.assessments-timeline');
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = '<p>No assessments yet. Take one to get started.</p>';
+      return;
+    }
+
+    // sort by createdAt descending
+    list.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+
+    let html = '';
+    list.forEach((asmt, idx) => {
+      const date = asmt.createdAt ? new Date(asmt.createdAt).toLocaleDateString() : '';
+      const { vataScore, pittaScore, kaphaScore } = asmt;
+      html += `
+        <div class="assessment-item">
+          <div class="assessment-date">${date}</div>
+          <div class="assessment-content">
+            <h4>${idx === 0 ? 'Latest Assessment' : 'Assessment'}</h4>
+            <p>Vata: ${vataScore}% | Pitta: ${pittaScore}% | Kapha: ${kaphaScore}%</p>
+            ${idx === 0 ? '<p><span class="badge info">Current</span></p>' : ''}
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
+  function editProfile() {
+    alert('Profile editing coming soon. Navigate to profile section or API for updates.');
+  }
+
+  function logout(event) {
+    if (event) event.preventDefault();
+    if (confirm('Are you sure you want to logout?')) {
+      localStorage.clear();
+      window.location.href = 'login-select.html';
+    }
+  }
+
+  async function saveRecommendation(herbId, herbNameEncoded, herbDosageEncoded, conditionEncoded) {
+    const herbName = decodeURIComponent(herbNameEncoded);
+    const herbDosage = decodeURIComponent(herbDosageEncoded);
+    const condition = decodeURIComponent(conditionEncoded || '');
+
+    const res = await apiFetch('/recommendations', {
+      method: 'POST',
+      body: JSON.stringify({
+        herb_id: herbId,
+        condition: condition || null,
+        dosage: herbDosage || 'as recommended',
+        frequency: 'twice daily',
+        duration: '4 weeks',
+        instructions: 'Take after food',
+        expected_benefits: 'Relief for condition-related symptoms',
+        precautions: 'Consult physician if pregnant',
+        priority: 'medium'
+      })
+    });
+
+    if (!res.success) {
+      return alert(`Could not save recommendation for ${herbName}: ${res.message}`);
+    }
+
+    alert(`Saved ${herbName} to your recommendations.`);
+
+    // Refresh both tabs and recent preview after each Save as Prescription click
+    await loadRecommendations('all');
+    await loadRecommendationHistory();
+
+    // ensure recent preview has the newest entry
+    const latestRecs = (await apiFetch('/recommendations')).data || [];
+    updateRecentRecommendation(latestRecs);
+  }
+
+  // real-time update helpers
+  let realtimeInterval = null;
+
+  function getCurrentRecommendationFilter() {
+    const activeBtn = document.querySelector('.tab-btn.active');
+    return activeBtn ? activeBtn.getAttribute('data-filter') : 'active';
+  }
+
+  function startRealtimeUpdates() {
+    if (realtimeInterval) return;
+    realtimeInterval = setInterval(async () => {
+      await loadRecommendations(getCurrentRecommendationFilter());
+      await loadRecommendationHistory();
+    }, 15000); // every 15 seconds
+  }
+
+  function stopRealtimeUpdates() {
+    if (realtimeInterval) {
+      clearInterval(realtimeInterval);
+      realtimeInterval = null;
+    }
+  }
+
+  // navigation helpers
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const sectionId = this.getAttribute('data-section');
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(sectionId).classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.getAttribute('data-filter');
+      loadRecommendations(filter === 'all' ? 'all' : filter);
+    });
+  });
+
+  // Symptom search (NLP-like search + recommendation creation)
+  function debounce(fn, delay = 400) {
+    let timer = null;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  async function searchSymptoms() {
+    const queryInput = document.getElementById('symptomQuery');
+    const resultsContainer = document.getElementById('symptomSearchResults');
+    const query = queryInput.value.trim();
+
+    if (!query) {
+      resultsContainer.innerHTML = '<p class="hint">Please enter symptoms or condition to search.</p>';
+      return;
+    }
+
+    resultsContainer.innerHTML = '<p class="hint">Searching for matching herbs...</p>';
+
+    const res = await apiFetch('/search', {
+      method: 'POST',
+      body: JSON.stringify({ query })
+    });
+
+    if (!res.success) {
+      resultsContainer.innerHTML = `<p class="hint">Unable to search: ${res.message || 'Try again later.'}</p>`;
+      return;
+    }
+
+    if ((!res.herbs || res.herbs.length === 0) && (!res.matched_diseases || res.matched_diseases.length === 0)) {
+      resultsContainer.innerHTML = '<p class="hint">No matching recommendations found. Try different symptoms.</p>';
+      return;
+    }
+
+    const diseaseInfo = res.matched_diseases && res.matched_diseases.length ? `
+      <div class="disease-match">
+        <h4>Matched Disease(s):</h4>
+        <ul>
+          ${res.matched_diseases.map(d => `<li>${d.name} (${d.ayurvedic_name || 'Ayurveda'})</li>`).join('')}
+        </ul>
+      </div>
+    ` : '';
+
+    const herbCards = (res.herbs || []).map(h => `
+      <div class="search-herb">
+        <h4>${h.name}</h4>
+        <p><strong>Scientific name:</strong> ${h.scientific_name || 'N/A'}</p>
+        <p><strong>Effect:</strong> ${h.dosha.dosha_effect || 'N/A'}</p>
+        <p><strong>Benefits:</strong> ${h.benefits.length ? h.benefits.join(', ') : (h.description || 'N/A')}</p>
+        <p><strong>Use:</strong> ${h.usage_instructions || 'N/A'}</p>
+        <p><strong>Dosage:</strong> ${h.dosage || 'N/A'}</p>
+        <button class="btn-small primary" onclick="saveRecommendation(${h.id}, '${encodeURIComponent(h.name)}', '${encodeURIComponent(h.dosage || '')}', '${encodeURIComponent(query)}')">Save as Prescription</button>
+      </div>
+    `).join('');
+
+    resultsContainer.innerHTML = `
+      <div class="search-results-header">
+        <p><strong>Keywords:</strong> ${res.keywords.join(', ')}</p>
+        <p><strong>Herbs found:</strong> ${res.count}</p>
+      </div>
+      ${diseaseInfo}
+      <div class="search-results-grid">
+        ${herbCards}
+      </div>
+    `;
+
+    // Real-time update of recommendation panels after symptom search
+    await loadRecommendations(getCurrentRecommendationFilter());
+    await loadRecommendationHistory();
+    const latestRecs = (await apiFetch('/recommendations')).data || [];
+    updateRecentRecommendation(latestRecs);
+
+  }
+
+  // Action buttons binding
+  const getAssessmentBtn = document.getElementById('getAssessmentBtn');
+  const updatePasswordBtn = document.getElementById('updatePasswordBtn');
+  const enable2FABtn = document.getElementById('enable2FABtn');
+  const downloadDataBtn = document.getElementById('downloadDataBtn');
+  const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+
+  if (getAssessmentBtn) {
+    getAssessmentBtn.addEventListener('click', async () => {
+      // refresh current assessment data and show a notification
+      await loadAssessments();
+      await loadRecommendations(getCurrentRecommendationFilter());
+      await loadRecommendationHistory();
+      alert('Assessment data refreshed successfully.');
+    });
+  }
+
+  if (updatePasswordBtn) {
+    updatePasswordBtn.addEventListener('click', () => {
+      alert('Password update is active. Please implement server flow.');
+    });
+  }
+
+  if (enable2FABtn) {
+    enable2FABtn.addEventListener('click', () => {
+      alert('2FA is flagged for activation. Enable logic pending backend flow.');
+    });
+  }
+
+  if (downloadDataBtn) {
+    downloadDataBtn.addEventListener('click', () => {
+      alert('Data download initiated. Integrate actual export API as needed.');
+    });
+  }
+
+  if (deleteAccountBtn) {
+    deleteAccountBtn.addEventListener('click', () => {
+      if (confirm('Confirm account deletion? This is irreversible.')) {
+        alert('Account deleted (mock). Redirecting to login.');
+        localStorage.clear();
+        window.location.href = 'login-select.html';
+      }
+    });
+  }
+
+  // Symptom search binding
+  const searchBtn = document.getElementById('symptomSearchBtn');
+  const symptomInput = document.getElementById('symptomQuery');
+  const debouncedSearch = debounce(searchSymptoms, 500);
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', searchSymptoms);
+  }
+
+  if (symptomInput) {
+    symptomInput.addEventListener('input', debouncedSearch);
+    symptomInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        searchSymptoms();
+      }
+    });
+  }
+
+  const clearSearchBtn = document.getElementById('symptomClearBtn');
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+      symptomInput.value = '';
+      document.getElementById('symptomSearchResults').innerHTML = '<p class="hint">Type your symptoms and press Search to get herbal recommendations.</p>';
+      symptomInput.focus();
+    });
+  }
+
+  window.addEventListener('load', initDashboard);
+</script>
+
+</body>
+</html>

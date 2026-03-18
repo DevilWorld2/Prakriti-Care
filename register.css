@@ -1,0 +1,328 @@
+/* ======== GLOBAL STYLES ======== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f7f9fc;
+  color: #333;
+}
+
+/* ======== NAVBAR ======== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: #0b3d2e;
+  color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.logo img {
+  height: 45px;
+}
+
+.navbar nav a {
+  margin-left: 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.navbar nav a:hover {
+  color: #c9a227;
+}
+
+.nav-btn {
+  background: #c9a227;
+  padding: 8px 18px;
+  border-radius: 20px;
+  color: #000 !important;
+}
+
+/* ======== BUTTONS ======== */
+.btn {
+  padding: 12px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.primary {
+  background: #c9a227;
+  color: #000;
+}
+
+.primary:hover {
+  background: #d4b347;
+}
+
+.secondary {
+  background: #0b3d2e;
+  color: #fff;
+}
+
+.secondary:hover {
+  background: #0a2f26;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* ======== FOOTER ======== */
+footer {
+  background: #0b3d2e;
+  color: #fff;
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 4px solid #c9a227;
+  margin-top: 60px;
+}
+
+footer p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+/* ======== REGISTER PAGE ======== */
+.register-hero {
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+              url('images/hero.jpeg') center/cover;
+  padding: 100px 50px;
+  text-align: center;
+  color: #fff;
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.register-hero p {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.register-container {
+  padding: 60px 50px;
+  background: #fff;
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-wrapper {
+  max-width: 500px;
+  width: 100%;
+}
+
+.register-form {
+  background: #f7f9fc;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+}
+
+.register-form h2 {
+  color: #0b3d2e;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #0b3d2e;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #c9a227;
+  box-shadow: 0 0 5px rgba(201, 162, 39, 0.3);
+}
+
+.form-group.checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.form-group.checkbox input {
+  width: auto;
+  margin-right: 10px;
+}
+
+.form-group.checkbox label {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.register-form .btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.login-link a {
+  color: #c9a227;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* ======== DATE OF BIRTH & AGE FIELDS ======== */
+#dob {
+  background: #fff;
+}
+
+#age {
+  background: #f0f0f0;
+  cursor: not-allowed;
+  color: #666;
+}
+
+/* ======== MESSAGE STYLES ======== */
+.message {
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: none;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.message.error {
+  display: block;
+  background: #fee;
+  color: #c33;
+  border: 1px solid #fcc;
+}
+
+.message.success {
+  display: block;
+  background: #efe;
+  color: #3c3;
+  border: 1px solid #cfc;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 15px 20px;
+  }
+
+  .navbar nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+  }
+
+  .navbar nav a {
+    margin: 8px 0;
+  }
+
+  .register-hero {
+    padding: 60px 20px;
+    min-height: auto;
+  }
+
+  .register-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .register-hero p {
+    font-size: 1rem;
+  }
+
+  .register-container {
+    padding: 40px 20px;
+  }
+
+  .form-wrapper {
+    max-width: 100%;
+  }
+
+  .register-form {
+    padding: 25px 20px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}

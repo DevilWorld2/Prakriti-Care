@@ -1,0 +1,268 @@
+/* ======== GLOBAL STYLES ======== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f7f9fc;
+  color: #333;
+}
+
+/* ======== NAVBAR ======== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: #0b3d2e;
+  color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.logo img {
+  height: 45px;
+}
+
+.navbar nav a {
+  margin-left: 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.navbar nav a:hover {
+  color: #c9a227;
+}
+
+.navbar nav a.active {
+  color: #c9a227;
+  font-weight: 600;
+}
+
+/* ======== BUTTONS ======== */
+.btn {
+  padding: 12px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.primary {
+  background: #c9a227;
+  color: #000;
+}
+
+.primary:hover {
+  background: #d4b347;
+}
+
+.secondary {
+  background: #0b3d2e;
+  color: #fff;
+}
+
+.secondary:hover {
+  background: #0a2f26;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* ======== FOOTER ======== */
+footer {
+  background: #0b3d2e;
+  color: #fff;
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 4px solid #c9a227;
+  margin-top: 60px;
+}
+
+footer p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+/* ======== LOGIN SELECT PAGE ======== */
+.login-hero {
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+              url('images/hero.jpeg') center/cover;
+  padding: 100px 50px;
+  text-align: center;
+  color: #fff;
+  min-height: 35vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.login-hero p {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.select-container {
+  padding: 60px 50px;
+  background: #fff;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-wrapper {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.select-wrapper h2 {
+  text-align: center;
+  color: #0b3d2e;
+  margin-bottom: 50px;
+  font-size: 2rem;
+}
+
+.select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+.select-card {
+  background: #f7f9fc;
+  padding: 40px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 4px solid #c9a227;
+}
+
+.select-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+.card-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.select-card h3 {
+  color: #0b3d2e;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.select-card p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  min-height: 50px;
+}
+
+.select-card .btn {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.register-link {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 15px;
+}
+
+.register-link a {
+  color: #c9a227;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 15px 20px;
+  }
+
+  .navbar nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+  }
+
+  .navbar nav a {
+    margin: 8px 0;
+  }
+
+  .login-hero {
+    padding: 60px 20px;
+    min-height: auto;
+  }
+
+  .login-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .login-hero p {
+    font-size: 1rem;
+  }
+
+  .select-container {
+    padding: 40px 20px;
+    min-height: auto;
+  }
+
+  .select-wrapper h2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
+  .select-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .select-card {
+    padding: 30px 20px;
+  }
+
+  .card-icon {
+    font-size: 3rem;
+  }
+
+  .select-card h3 {
+    font-size: 1.4rem;
+  }
+}

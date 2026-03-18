@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | PrakritiCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Dashboard - Manage system, users, and content">
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    .live-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-right: 15px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background: #e7f9ed;
+      color: #047a35;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #04a44b;
+      display: inline-block;
+      box-shadow: 0 0 6px rgba(4, 164, 75, 0.55);
+    }
+
+    .live-status.offline {
+      background: #ffe5e5;
+      color: #b32e2e;
+    }
+
+    .live-status.offline .live-dot {
+      background: #d60000;
+      box-shadow: 0 0 6px rgba(214, 0, 0, 0.55);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ================= ADMIN HEADER ================= -->
+<header class="admin-header">
+  <div class="header-left">
+    <div class="logo-small admin">
+      <span>⚙️</span>
+      <span>Admin Panel</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="admin-menu">
+      <span class="admin-avatar">👨‍💼</span>
+      <button id="adminLogoutBtn" class="logout-btn" onclick="adminLogout(event)">Logout</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ADMIN CONTAINER ================= -->
+<div class="admin-wrapper">
+  
+  <!-- ================= ADMIN SIDEBAR ================= -->
+  <aside class="admin-sidebar">
+    <nav class="admin-nav">
+      <a href="#dashboard" class="nav-item active" data-section="dashboard">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#disease-management" class="nav-item" data-section="disease-management">
+        <span class="icon">🩺</span>
+        <span>Disease Management</span>
+      </a>
+      <a href="#drug-management" class="nav-item" data-section="drug-management">
+        <span class="icon">💊</span>
+        <span>Drug Management</span>
+      </a>
+      <a href="#formulations" class="nav-item" data-section="formulations">
+        <span class="icon">🧪</span>
+        <span>Formulations</span>
+      </a>
+      <a href="#recommendations" class="nav-item" data-section="recommendations">
+        <span class="icon">✅</span>
+        <span>Recommendations</span>
+      </a>
+      <a href="#users" class="nav-item" data-section="users">
+        <span class="icon">👥</span>
+        <span>Users</span>
+      </a>
+      <a href="#settings" class="nav-item" data-section="settings">
+        <span class="icon">⚙️</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ================= ADMIN MAIN CONTENT ================= -->
+  <main class="admin-main">
+    
+    <!-- ================= DASHBOARD SECTION ================= -->
+    <section id="dashboard" class="content-section active">
+      <div class="section-header">
+        <h1>Admin Dashboard</h1>
+        <p>System overview and key metrics</p>
+      </div>
+
+      <!-- Key Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon users">👥</div>
+          <div class="stat-info">
+            <div class="stat-number" id="totalUsersStat">--</div>
+            <div class="stat-label">Total Users</div>
+            <div class="stat-change positive" id="userTrend">--</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon recommendations">💊</div>
+          <div class="stat-info">
+            <div class="stat-number" id="totalRecommendationsStat">--</div>
+            <div class="stat-label">Recommendations</div>
+            <div class="stat-change positive" id="recommendationTrend">--</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon active">🟢</div>
+          <div class="stat-info">
+            <div class="stat-number" id="activeSessionsStat">--</div>
+            <div class="stat-label">Active Sessions</div>
+            <div class="stat-change neutral">→ Live usage</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon herbs">🌿</div>
+          <div class="stat-info">
+            <div class="stat-number" id="totalHerbsStat">--</div>
+            <div class="stat-label">Herbs in Database</div>
+            <div class="stat-change">Updated</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>User Growth (Last 30 Days)</h3>
+          <div class="simple-chart">
+            <div class="chart-bar" style="height: 40%;"><span>Day 5</span></div>
+            <div class="chart-bar" style="height: 55%;"><span>Day 10</span></div>
+            <div class="chart-bar" style="height: 72%;"><span>Day 15</span></div>
+            <div class="chart-bar" style="height: 85%;"><span>Day 20</span></div>
+            <div class="chart-bar" style="height: 100%;"><span>Day 30</span></div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Recommendation Fulfillment Rate</h3>
+          <div class="donut-chart">
+            <div class="donut">
+              <div class="donut-segment completed" style="--percentage: 78;"></div>
+              <div class="donut-segment pending" style="--percentage: 18;"></div>
+              <div class="donut-segment failed" style="--percentage: 4;"></div>
+            </div>
+            <div class="donut-legend">
+              <span><span class="dot completed"></span> Completed: 78%</span>
+              <span><span class="dot pending"></span> Pending: 18%</span>
+              <span><span class="dot failed"></span> Failed: 4%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="recent-activity">
+        <h3>Recent Activity</h3>
+        <table class="activity-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>User</th>
+              <th>Action</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Just now</td>
+              <td>user@example.com</td>
+              <td>New recommendation received</td>
+              <td><span class="badge success">Success</span></td>
+            </tr>
+            <tr>
+              <td>2 mins ago</td>
+              <td>admin@prakriticare.com</td>
+              <td>Updated herb database</td>
+              <td><span class="badge info">Updated</span></td>
+            </tr>
+            <tr>
+              <td>5 mins ago</td>
+              <td>john.doe@email.com</td>
+              <td>Account registration</td>
+              <td><span class="badge success">Success</span></td>
+            </tr>
+            <tr>
+              <td>8 mins ago</td>
+              <td>system</td>
+              <td>Backup completed</td>
+              <td><span class="badge success">Success</span></td>
+            </tr>
+            <tr>
+              <td>12 mins ago</td>
+              <td>jane.smith@email.com</td>
+              <td>Dosha assessment completed</td>
+              <td><span class="badge success">Success</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= DISEASE MANAGEMENT SECTION ================= -->
+    <section id="disease-management" class="content-section">
+      <div class="section-header">
+        <h1>Disease Management</h1>
+        <p>Manage disease entries and mappings to conditions</p>
+        <button class="btn primary" id="addDiseaseBtn">Add Disease</button>
+      </div>
+
+      <div class="disease-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Disease</th>
+              <th>Ayurvedic Name</th>
+              <th>Primary Symptoms</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="diseaseTableBody">
+            <tr><td colspan="4" class="loading">Loading disease entries...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      </section>
+
+    <!-- ================= USERS SECTION ================= -->
+    <section id="users" class="content-section">
+      <div class="section-header">
+        <h1>User Management</h1>
+        <p>Manage system users and account settings</p>
+        <button class="btn primary">Add New User</button>
+      </div>
+
+      <div class="users-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Profile</th>
+              <th>Joined</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr>
+              <td colspan="7" class="loading">Loading users...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= DRUG MANAGEMENT SECTION ================= -->
+    <section id="drug-management" class="content-section">
+      <div class="section-header">
+        <h1>Drug Management</h1>
+        <p>Manage and update herbal drugs and compositions</p>
+        <button class="btn primary">Add New Drug</button>
+      </div>
+
+      <div class="herbs-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Herb Name</th>
+              <th>Sanskrit Name</th>
+              <th>Dosha Effect</th>
+              <th>Primary Benefits</th>
+              <th>Usage Count</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Triphala</td>
+              <td>त्रिफला</td>
+              <td>All Doshas</td>
+              <td>Digestion, Detox</td>
+              <td>342</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>
+                <button class="action-btn edit">Edit</button>
+                <button class="action-btn delete">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Ashwagandha</td>
+              <td>अश्वगंधा</td>
+              <td>Vata</td>
+              <td>Stress, Sleep</td>
+              <td>289</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>
+                <button class="action-btn edit">Edit</button>
+                <button class="action-btn delete">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Tulsi</td>
+              <td>तुलसी</td>
+              <td>Vata, Kapha</td>
+              <td>Immunity, Respiratory</td>
+              <td>267</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>
+                <button class="action-btn edit">Edit</button>
+                <button class="action-btn delete">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Brahmi</td>
+              <td>ब्राह्मी</td>
+              <td>Pitta, Kapha</td>
+              <td>Memory, Focus</td>
+              <td>198</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>
+                <button class="action-btn edit">Edit</button>
+                <button class="action-btn delete">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Neem</td>
+              <td>नीम</td>
+              <td>Pitta, Kapha</td>
+              <td>Blood Purification</td>
+              <td>156</td>
+              <td><span class="status-badge active">Active</span></td>
+              <td>
+                <button class="action-btn edit">Edit</button>
+                <button class="action-btn delete">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= RECOMMENDATIONS SECTION ================= -->
+    <section id="recommendations" class="content-section">
+      <div class="section-header">
+        <h1>Recommendations Tracking</h1>
+        <p>Monitor all system recommendations and their effectiveness</p>
+      </div>
+
+      <div class="tracking-container">
+        <div class="tracking-card">
+          <h3>Total Recommendations</h3>
+          <div class="big-number" id="totalRecommendations">--</div>
+          <div class="trend positive" id="recommendationTrend">--</div>
+        </div>
+
+        <div class="tracking-card">
+          <h3>Success Rate</h3>
+          <div class="big-number" id="successRate">--</div>
+          <div class="trend neutral">Stable performance</div>
+        </div>
+
+        <div class="tracking-card">
+          <h3>Pending Review</h3>
+          <div class="big-number" id="pendingRecommendations">--</div>
+          <div class="trend warning">⚠️ Needs attention</div>
+        </div>
+
+        <div class="tracking-card">
+          <h3>Failed Cases</h3>
+          <div class="big-number" id="failedRecommendations">--</div>
+          <div class="trend">Being analyzed</div>
+        </div>
+      </div>
+
+      <div class="failed-items">
+        <h3>Recent Failed Recommendations</h3>
+        <div class="item-list" id="recentFailedList">
+          <div class="item failed-item">
+            <div><strong>User:</strong> user@example.com</div>
+            <div><strong>Herb:</strong> Ashwagandha</div>
+            <div><strong>Reason:</strong> Dosage mismatch</div>
+            <div><strong>Date:</strong> Feb 19, 2026</div>
+            <button class="btn-small primary">Review</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FORMULATIONS SECTION ================= -->
+    <section id="formulations" class="content-section">
+      <div class="section-header">
+        <h1>Formulations</h1>
+        <p>Manage and review herbal formulations and recipes</p>
+        <button class="btn primary" id="addFormulationBtn">Add Formulation</button>
+      </div>
+
+      <div class="formulations-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Formula</th>
+              <th>Ingredients</th>
+              <th>Indications</th>
+              <th>Usage</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="formulationTableBody">
+            <tr><td colspan="5" class="loading">Loading formulations...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+        <div class="report-card">
+          <h3>📊 Monthly Report</h3>
+          <p>User activity and system performance metrics</p>
+          <button class="btn secondary">Generate Report</button>
+        </div>
+
+        <div class="report-card">
+          <h3>👥 User Analytics Report</h3>
+          <p>Detailed user engagement and demographics</p>
+          <button class="btn secondary">Generate Report</button>
+        </div>
+
+        <div class="report-card">
+          <h3>💊 Recommendation Report</h3>
+          <p>Effectiveness and success rate analysis</p>
+          <button class="btn secondary">Generate Report</button>
+        </div>
+
+        <div class="report-card">
+          <h3>🌿 Herb Performance Report</h3>
+          <p>Usage statistics for all herbs</p>
+          <button class="btn secondary">Generate Report</button>
+        </div>
+
+        <div class="report-card">
+          <h3>🛡️ System Health Report</h3>
+          <p>Server performance and uptime analysis</p>
+          <button class="btn secondary">Generate Report</button>
+        </div>
+
+        <div class="report-card">
+          <h3>📋 Custom Report Builder</h3>
+          <p>Create custom reports with selected metrics</p>
+          <button class="btn secondary">Create Custom</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SETTINGS SECTION ================= -->
+    <section id="settings" class="content-section">
+      <div class="section-header">
+        <h1>Settings</h1>
+        <p>Configure and manage system-wide settings</p>
+      </div>
+
+      <div class="settings-sections">
+        <div class="settings-group">
+          <h3>🔧 General Settings</h3>
+          <div class="setting">
+            <label>System Name</label>
+            <input type="text" value="PrakritiCare" placeholder="System name">
+          </div>
+          <div class="setting">
+            <label>Support Email</label>
+            <input type="email" value="support@prakriticare.com" placeholder="Support email">
+          </div>
+          <div class="setting">
+            <label>Max Users</label>
+            <input type="number" value="10000" placeholder="Maximum users">
+          </div>
+          <button class="btn primary">Save Changes</button>
+        </div>
+
+        <div class="settings-group">
+          <h3>📧 Email Configuration</h3>
+          <div class="setting">
+            <label>SMTP Server</label>
+            <input type="text" value="smtp.gmail.com" placeholder="SMTP server">
+          </div>
+          <div class="setting">
+            <label>SMTP Port</label>
+            <input type="number" value="587" placeholder="Port">
+          </div>
+          <div class="setting">
+            <label>
+              <input type="checkbox" checked> Enable Email Notifications
+            </label>
+          </div>
+          <button class="btn primary">Save Changes</button>
+        </div>
+
+        <div class="settings-group">
+          <h3>🔐 Security Settings</h3>
+          <div class="setting">
+            <label>
+              <input type="checkbox" checked> Require 2FA for Admin
+            </label>
+          </div>
+          <div class="setting">
+            <label>
+              <input type="checkbox" checked> Enable API Authentication
+            </label>
+          </div>
+          <div class="setting">
+            <label>Session Timeout (minutes)</label>
+            <input type="number" value="30" placeholder="Timeout">
+          </div>
+          <button class="btn primary">Save Changes</button>
+        </div>
+
+        <div class="settings-group danger">
+          <h3>⚠️ Dangerous Operations</h3>
+          <p>Use with caution - these actions cannot be undone</p>
+          <button class="btn-danger">Clear Cache</button>
+          <button class="btn-danger">Reset Database</button>
+          <button class="btn-danger">Full System Reset</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 PrakritiCare Admin Panel | Secured Access Only</p>
+  <p>All actions are logged and monitored for security</p>
+</footer>
+
+<script>
+  // Admin navigation
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const sectionId = this.getAttribute('data-section');
+      
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+      
+      this.classList.add('active');
+      document.getElementById(sectionId).classList.add('active');
+
+      // optional dynamic reload per section
+      switch (sectionId) {
+        case 'dashboard':
+          loadDashboardStats();
+          loadRecentActivity();
+          break;
+        case 'disease-management':
+          loadDiseaseManagement();
+          break;
+        case 'drug-management':
+          loadDrugManagement();
+          break;
+        case 'formulations':
+          loadFormulations();
+          break;
+        case 'recommendations':
+          loadDashboardStats();
+          break;
+        case 'users':
+          loadAdminUsers();
+          break;
+        case 'settings':
+          break;
+      }
+    });
+  });
+
+  // API helper for admin calls
+  const API_BASE_URL = 'http://localhost/Prakriti Care/api';
+
+  function getAuthToken() {
+    return localStorage.getItem('authToken');
+  }
+
+  function apiFetch(path, options = {}) {
+    options.headers = options.headers || {};
+    options.headers['Content-Type'] = 'application/json';
+    const token = getAuthToken();
+    if (token) {
+      options.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return fetch(API_BASE_URL + path, options).then(res => res.json());
+  }
+
+  function updateLiveStatus(isOnline, message = '') {
+    const statusEl = document.getElementById('liveStatus');
+    if (!statusEl) return;
+
+    if (isOnline) {
+      statusEl.classList.remove('offline');
+      statusEl.innerHTML = '<span class="live-dot"></span> Live';
+    } else {
+      statusEl.classList.add('offline');
+      statusEl.innerHTML = '<span class="live-dot"></span> Offline';
+    }
+
+    if (message) {
+      statusEl.title = message;
+    }
+  }
+
+  // Ensure only logged-in admin can view this page
+  async function initAdmin() {
+    const token = getAuthToken();
+    const userType = localStorage.getItem('userType');
+    if (!token || userType !== 'admin') {
+      window.location.href = 'login-select.html';
+      return;
+    }
+
+    await Promise.all([
+      loadAdminUsers(),
+      loadDashboardStats(),
+      loadRecentActivity(),
+      loadDiseaseManagement(),
+      loadDrugManagement(),
+      loadFormulations()
+    ]);
+
+    const addDiseaseBtn = document.getElementById('addDiseaseBtn');
+    if (addDiseaseBtn) {
+      addDiseaseBtn.addEventListener('click', addDisease);
+    }
+
+    // Real-time refresh interval (every 10 seconds)
+    setInterval(async () => {
+      await Promise.all([
+        loadDashboardStats(),
+        loadAdminUsers(),
+        loadRecentActivity(),
+        loadDiseaseManagement(),
+        loadDrugManagement(),
+        loadFormulations()
+      ]);
+    }, 10000);
+  }
+
+  async function loadDashboardStats() {
+    // Fetch stats from backend
+    const res = await apiFetch('/admin/dashboard-stats');
+    if (!res.success) {
+      console.warn('Could not load dashboard stats:', res.message);
+      updateLiveStatus(false, res.message || 'Dashboard stats unavailable');
+      return;
+    }
+
+    updateLiveStatus(true, 'Dashboard stats loaded');
+    const stats = res.data || {};
+
+    document.getElementById('totalUsersStat').textContent = stats.total_users ?? '--';
+    document.getElementById('totalRecommendationsStat').textContent = stats.total_recommendations ?? '--';
+    document.getElementById('activeSessionsStat').textContent = stats.active_users ?? '--';
+    document.getElementById('totalHerbsStat').textContent = stats.total_herbs ?? '--';
+
+    document.getElementById('totalRecommendations').textContent = stats.total_recommendations ?? '--';
+    document.getElementById('successRate').textContent = `${stats.recommendation_success_rate ?? '--'}%`;
+    document.getElementById('pendingRecommendations').textContent = stats.recommendation_pending ?? '--';
+    document.getElementById('failedRecommendations').textContent = stats.recommendation_failed ?? '--';
+
+    const trendEl = document.getElementById('recommendationTrend');
+    if (stats.total_recommendations !== undefined) {
+      const change = stats.total_recommendations - (stats.total_recommendations_last_month ?? stats.total_recommendations);
+      const percent = stats.total_recommendations_last_month ? Math.round((change / stats.total_recommendations_last_month) * 100) : 0;
+      const direction = percent >= 0 ? '↑' : '↓';
+      const label = `${direction} ${Math.abs(percent)}% from last month`;
+      trendEl.textContent = label;
+    }
+
+    // Populate recent failed recommendations
+    const failedList = document.getElementById('recentFailedList');
+    if (Array.isArray(stats.recent_failed) && stats.recent_failed.length) {
+      failedList.innerHTML = stats.recent_failed.map(item => {
+        const date = new Date(item.updated_at || item.created_at || Date.now()).toLocaleDateString();
+        return `
+          <div class="item failed-item">
+            <div><strong>User:</strong> ${item.user_email || '—'}</div>
+            <div><strong>Herb:</strong> ${item.herb_name || '—'}</div>
+            <div><strong>Status:</strong> ${item.status || 'failed'}</div>
+            <div><strong>Date:</strong> ${date}</div>
+            <button class="btn-small primary" onclick="reviewRecommendation(${item.id})">Review</button>
+          </div>
+        `;
+      }).join('');
+    } else {
+      failedList.innerHTML = '<div class="item">No failed recommendations found.</div>';
+    }
+  }
+
+  async function loadRecentActivity() {
+    const tableBody = document.querySelector('.activity-table tbody');
+    tableBody.innerHTML = '<tr><td colspan="4" class="loading">Loading activity...</td></tr>';
+
+    const res = await apiFetch('/admin/recent-activity?limit=7');
+    if (!res.success) {
+      tableBody.innerHTML = `<tr><td colspan="4" class="loading">${res.message || 'Could not load recent activity.'}</td></tr>`;
+      updateLiveStatus(false, res.message || 'Recent activity unavailable');
+      return;
+    }
+
+    updateLiveStatus(true, 'Recent activity loaded');
+    const items = res.data || [];
+    if (items.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="4" class="loading">No recent activity found.</td></tr>';
+      return;
+    }
+
+    tableBody.innerHTML = items.map(activity => {
+      const time = new Date(activity.time || Date.now()).toLocaleString();
+      const statusTag = activity.status_tag || 'info';
+      const statusClass = statusTag === 'success' ? 'success' : statusTag === 'discontinued' || statusTag === 'failed' ? 'failed' : statusTag === 'warning' ? 'warning' : 'info';
+
+      return `
+        <tr>
+          <td>${time}</td>
+          <td>${activity.user_email || 'System'}</td>
+          <td>${activity.action}: ${activity.detail}</td>
+          <td><span class="badge ${statusClass}">${activity.status_tag || 'info'}</span></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function reviewRecommendation(recId) {
+    alert('Review feature coming soon. Recommendation ID: ' + recId);
+  }
+
+  async function loadAdminUsers(page = 1, limit = 25) {
+    const tbody = document.getElementById('usersTableBody');
+    tbody.innerHTML = '<tr><td colspan="7" class="loading">Loading users...</td></tr>';
+
+    const res = await apiFetch(`/admin/users?page=${page}&limit=${limit}`);
+
+    if (!res.success) {
+      tbody.innerHTML = `<tr><td colspan="7" class="loading">${res.message || 'Unable to load users.'}</td></tr>`;
+      return;
+    }
+
+    const users = res.data || [];
+    if (users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="loading">No users found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = users.map(user => {
+      const joined = user.created_at ? new Date(user.created_at).toLocaleDateString() : '--';
+      const status = user.is_active ? 'Active' : 'Inactive';
+      const statusClass = user.is_active ? 'active' : 'inactive';
+
+      return `
+        <tr>
+          <td>#${user.id}</td>
+          <td>${user.fullname || '—'}</td>
+          <td>${user.email || '—'}</td>
+          <td>${user.dosha_type || '—'}</td>
+          <td>${joined}</td>
+          <td><span class="status-badge ${statusClass}">${status}</span></td>
+          <td>
+            <button class="action-btn view" onclick="viewUser(${user.id})">View</button>
+            <button class="action-btn edit" onclick="editUser(${user.id})">Toggle Active</button>
+            <button class="action-btn delete" onclick="deleteUser(${user.id})">Delete</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function viewUser(userId) {
+    const res = await apiFetch(`/admin/users/${userId}`);
+    if (!res.success) {
+      return alert(`Could not find user: ${res.message}`);
+    }
+    const d = res.data;
+    alert(`User ${d.fullname || d.email} (ID ${d.id})\nStatus: ${d.is_active ? 'Active' : 'Inactive'}\nJoined: ${new Date(d.created_at).toLocaleDateString()}`);
+  }
+
+  async function editUser(userId) {
+    const newStatus = confirm('Mark user as active? Press cancel to deactivate.') ? 1 : 0;
+    const res = await apiFetch(`/admin/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ is_active: newStatus })
+    });
+    if (!res.success) {
+      alert(`Update failed: ${res.message}`);
+      return;
+    }
+    await loadAdminUsers();
+  }
+
+  async function deleteUser(userId) {
+    if (!confirm('Are you sure you want to deactivate this user?')) return;
+    const res = await apiFetch(`/admin/users/${userId}`, { method: 'DELETE' });
+    if (!res.success) {
+      alert(`Delete failed: ${res.message}`);
+      return;
+    }
+    await loadAdminUsers();
+  }
+
+  async function loadDiseaseManagement() {
+    const tbody = document.getElementById('diseaseTableBody');
+    tbody.innerHTML = '<tr><td colspan="4" class="loading">Loading disease entries...</td></tr>';
+
+    const res = await apiFetch('/diseases');
+    if (!res.success) {
+      tbody.innerHTML = `<tr><td colspan="4" class="loading">${res.message || 'Unable to load diseases.'}</td></tr>`;
+      return;
+    }
+
+    const diseaseRows = res.data || [];
+    if (diseaseRows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="loading">No diseases found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = diseaseRows.map(item => `
+      <tr>
+        <td>${item.name}</td>
+        <td>${item.ayurvedic_name || '—'}</td>
+        <td>${item.common_symptoms || '—'}</td>
+        <td>
+          <button class="action-btn view" onclick="viewDisease(${item.id})">View</button>
+          <button class="action-btn edit" onclick="editDisease(${item.id})">Edit</button>
+          <button class="action-btn delete" onclick="deleteDisease(${item.id})">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function viewDisease(id) {
+    const res = await apiFetch(`/diseases/${id}`);
+    if (!res.success) {
+      return alert(`Disease not found: ${res.message}`);
+    }
+    const item = res.data;
+    alert(`Disease: ${item.name}\nAyurvedic: ${item.ayurvedic_name}\nSymptoms: ${item.common_symptoms}\nDosha: ${item.dosha_imbalance}`);
+  }
+
+  async function editDisease(id) {
+    const newName = prompt('New name (leave blank for no change):');
+    if (newName === null) return;
+    const newSymptoms = prompt('New symptoms (leave blank for no change):');
+
+    const body = {};
+    if (newName.trim()) body.name = newName.trim();
+    if (newSymptoms !== null) body.common_symptoms = newSymptoms.trim();
+
+    if (Object.keys(body).length === 0) {
+      return alert('No change provided.');
+    }
+
+    const res = await apiFetch(`/diseases/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(body)
+    });
+
+    if (!res.success) {
+      alert(`Update failed: ${res.message}`);
+      return;
+    }
+
+    alert('Disease updated successfully.');
+    await loadDiseaseManagement();
+  }
+
+  async function deleteDisease(id) {
+    if (!confirm('Delete this disease entry?')) return;
+    const res = await apiFetch(`/diseases/${id}`, { method: 'DELETE' });
+    if (!res.success) {
+      alert(`Delete failed: ${res.message}`);
+      return;
+    }
+    await loadDiseaseManagement();
+  }
+
+  async function addDisease() {
+    const name = prompt('Disease name:');
+    if (!name) return;
+    const ayurvedic_name = prompt('Ayurvedic name:') || '';
+    const symptoms = prompt('Primary symptoms:') || '';
+    const dosha = prompt('Dosha imbalance (vata/pitta/kapha):') || '';
+
+    const res = await apiFetch('/diseases', {
+      method: 'POST',
+      body: JSON.stringify({ name, ayurvedic_name, common_symptoms: symptoms, dosha_imbalance: dosha })
+    });
+
+    if (!res.success) {
+      alert(`Add failed: ${res.message}`);
+      return;
+    }
+    await loadDiseaseManagement();
+    alert('Disease added successfully.');
+  }
+
+  async function loadDrugManagement() {
+    const tbody = document.querySelector('#drug-management .herbs-table-container tbody');
+    if (!tbody) return;
+
+    const res = await apiFetch('/herbs');
+    if (!res.success) {
+      tbody.innerHTML = '<tr><td colspan="7" class="loading">Unable to load drugs.</td></tr>';
+      return;
+    }
+
+    const drugs = res.data || [];
+    if (!drugs.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="loading">No drugs found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = drugs.map(h => `
+      <tr>
+        <td>${h.name || '—'}</td>
+        <td>${h.scientific_name || '—'}</td>
+        <td>${h.dosha_effect || 'N/A'}</td>
+        <td>${h.benefits || '—'}</td>
+        <td>${h.is_active ? '<span class="status-badge active">Active</span>' : '<span class="status-badge inactive">Inactive</span>'}</td>
+        <td>
+          <button class="action-btn view" onclick="viewDrug(${h.id})">View</button>
+          <button class="action-btn edit" onclick="editDrug(${h.id})">Edit</button>
+          <button class="action-btn delete" onclick="deleteDrug(${h.id})">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function viewDrug(id) {
+    const res = await apiFetch(`/herbs/${id}`);
+    if (!res.success) return alert(`Drug not found: ${res.message}`);
+    const d = res.data;
+    alert(`Herb: ${d.name} (${d.scientific_name || 'N/A'})\nDosha: ${d.dosha_effect || 'N/A'}\nBenefits: ${d.benefits || 'n/a'}`);
+  }
+
+  async function editDrug(id) {
+    const newName = prompt('New drug name:');
+    if (!newName) return;
+    const res = await apiFetch(`/herbs/${id}`, { method: 'PUT', body: JSON.stringify({ name: newName }) });
+    if (!res.success) return alert(`Update failed: ${res.message}`);
+    await loadDrugManagement();
+  }
+
+  async function deleteDrug(id) {
+    if (!confirm('Delete this drug?')) return;
+    const res = await apiFetch(`/herbs/${id}`, { method: 'DELETE' });
+    if (!res.success) return alert(`Delete failed: ${res.message}`);
+    await loadDrugManagement();
+  }
+
+  async function loadFormulations() {
+    const tbody = document.getElementById('formulationTableBody');
+    if (!tbody) return;
+
+    const res = await apiFetch('/formulations');
+    if (!res.success) {
+      tbody.innerHTML = '<tr><td colspan="5" class="loading">Unable to load formulations.</td></tr>';
+      return;
+    }
+
+    const formulations = res.data || [];
+    if (!formulations.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="loading">No formulations found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = formulations.map(item => `
+      <tr>
+        <td>${item.herb_name}</td>
+        <td>${item.disease_name}</td>
+        <td>${item.effectiveness}</td>
+        <td>${item.dosage_notes}</td>
+        <td>
+          <button class="action-btn view" onclick="viewFormulation(${item.id})">View</button>
+          <button class="action-btn edit" onclick="editFormulation(${item.id})">Edit</button>
+          <button class="action-btn delete" onclick="deleteFormulation(${item.id})">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function viewFormulation(id) {
+    const res = await apiFetch(`/formulations/${id}`);
+    if (!res.success) return alert(`Formulation not found: ${res.message}`);
+    const d = res.data;
+    alert(`Formulation ID: ${d.id}\nHerb: ${d.herb_name}\nDisease: ${d.disease_name}\nEffectiveness: ${d.effectiveness}`);
+  }
+
+  async function editFormulation(id) {
+    const newEffectiveness = prompt('New effectiveness (primary/secondary/supportive):');
+    if (!newEffectiveness) return;
+    const res = await apiFetch(`/formulations/${id}`, { method: 'PUT', body: JSON.stringify({ effectiveness: newEffectiveness }) });
+    if (!res.success) return alert(`Update failed: ${res.message}`);
+    await loadFormulations();
+  }
+
+  async function deleteFormulation(id) {
+    if (!confirm('Delete this formulation?')) return;
+    const res = await apiFetch(`/formulations/${id}`, { method: 'DELETE' });
+    if (!res.success) return alert(`Delete failed: ${res.message}`);
+    await loadFormulations();
+  }
+
+  async function getFormulationList() {
+    const res = await apiFetch('/formulations');
+    return res.success ? res.data : [];
+  }
+
+  async function addFormulation() {
+    const herbId = parseInt(prompt('Herb ID:'), 10);
+    const diseaseId = parseInt(prompt('Disease ID:'), 10);
+    const effectiveness = prompt('Effectiveness (primary/secondary/supportive):', 'supportive');
+    const dosage_notes = prompt('Dosage notes:', '');
+
+    if (!herbId || !diseaseId) {
+      return alert('Herb and Disease IDs are required.');
+    }
+
+    const res = await apiFetch('/formulations', {
+      method: 'POST',
+      body: JSON.stringify({ herb_id: herbId, disease_id: diseaseId, effectiveness, dosage_notes })
+    });
+    if (!res.success) {
+      return alert(`Add failed: ${res.message}`);
+    }
+    await loadFormulations();
+  }
+
+  function adminLogout(e) {
+    if (e) e.preventDefault();
+    if (confirm('Logout from admin panel?')) {
+      localStorage.clear();
+      window.location.href = 'login-select.html';
+    }
+  }
+
+  function adminLogout(e) {
+    if (e) e.preventDefault();
+    if (confirm('Logout from admin panel?')) {
+      localStorage.clear();
+      window.location.href = 'login-select.html';
+    }
+  }
+
+  window.addEventListener('load', initAdmin);
+</script>
+
+</body>
+</html>

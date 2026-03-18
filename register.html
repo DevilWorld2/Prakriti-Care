@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register | PrakritiCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Register for a PrakritiCare account">
+  <link rel="stylesheet" href="register.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="logo">
+    <img src="images/logo.png" alt="PrakritiCare Logo">
+    <span>PrakritiCare</span>
+  </div>
+  <nav>
+    <a href="Main Page.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="system.html">System</a>
+    <a href="herbs.html">Herbs</a>
+    <a href="contact.html">Contact</a>
+    <a href="login-select.html" class="nav-btn">Login</a>
+  </nav>
+</header>
+
+<!-- ================= REGISTER HERO ================= -->
+<section class="register-hero">
+  <h1>Create Your Account</h1>
+  <p>Join PrakritiCare and start your wellness journey</p>
+</section>
+
+<!-- ================= REGISTER FORM ================= -->
+<section class="register-container">
+  <div class="form-wrapper">
+    <form class="register-form">
+      <div class="form-group">
+        <label for="fullname">Full Name *</label>
+        <input type="text" id="fullname" name="fullname" required placeholder="Enter your full name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required placeholder="your@email.com">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXX XXXXX">
+      </div>
+
+      <div class="form-group">
+        <label for="dob">Date of Birth *</label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age*</label>
+        <input type="number" id="age" name="age" readonly placeholder="Your age will appear here">
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender *</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password *</label>
+        <input type="password" id="password" name="password" required placeholder="Create a strong password">
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password *</label>
+        <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confirm your password">
+      </div>
+
+      <div class="form-group checkbox">
+        <input type="checkbox" id="terms" name="terms" required>
+        <label for="terms">I agree to the Terms & Conditions and Privacy Policy *</label>
+      </div>
+
+      <div id="message" class="message"></div>
+      
+      <button type="submit" class="btn primary full-width" id="submitBtn">Create Account</button>
+
+      <p class="login-link">Already have an account? <a href="user-login.html">Login here</a></p>
+    </form>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 PrakritiCare | Ayurvedic Drug Recommendation System</p>
+  <p>Developed using 🌿 Ayurveda & 💻 Technology</p>
+</footer>
+
+<script>
+  // API Base URL
+  const API_BASE_URL = 'http://localhost/Prakriti Care/api';
+
+  // Calculate age from date of birth
+  document.getElementById('dob').addEventListener('change', function() {
+    const dobInput = this.value;
+    if (!dobInput) return;
+
+    const dob = new Date(dobInput);
+    const today = new Date();
+    
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    
+    // Adjust age if birthday hasn't occurred this year
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+
+    // Validate age (must be at least 18)
+    if (age < 18) {
+      const messageDiv = document.getElementById('message');
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '❌ You must be at least 18 years old to register.';
+      document.getElementById('age').value = '';
+      document.getElementById('dob').value = '';
+      return;
+    }
+
+    document.getElementById('age').value = age;
+  });
+
+  // Handle registration form submission
+  document.querySelector('.register-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Get form data
+    const fullname = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const dateOfBirth = document.getElementById('dob').value;
+    const age = parseInt(document.getElementById('age').value);
+    const gender = document.getElementById('gender').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    // Client-side validation
+    const messageDiv = document.getElementById('message');
+    messageDiv.className = 'message';
+    messageDiv.textContent = '';
+
+    // Validate all fields
+    if (!fullname || !email || !phone || !dateOfBirth || !gender || !password) {
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '❌ Please fill in all required fields.';
+      return;
+    }
+
+    // Validate age
+    if (age < 18) {
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '❌ You must be at least 18 years old to register.';
+      return;
+    }
+
+    // Validate password match
+    if (password !== confirmPassword) {
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '❌ Passwords do not match.';
+      return;
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '❌ Password must be at least 6 characters long.';
+      return;
+    }
+
+    // Validate terms checkbox
+    if (!document.getElementById('terms').checked) {
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '❌ You must agree to the Terms & Conditions.';
+      return;
+    }
+
+    // Show loading state
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Creating Account...';
+    submitBtn.disabled = true;
+
+    try {
+      // Send registration data to backend API
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullname,
+          email,
+          phone,
+          dateOfBirth,
+          age,
+          gender,
+          password,
+          confirmPassword
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Registration successful
+        messageDiv.className = 'message success';
+        messageDiv.textContent = '✅ Registration successful! Redirecting to your dashboard...';
+        
+        // Store token in localStorage
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('userName', data.user.fullname);
+        localStorage.setItem('userType', 'user');
+        
+        // Redirect to dashboard after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'user-dashboard.html';
+        }, 2000);
+      } else {
+        // Registration failed
+        messageDiv.className = 'message error';
+        const errMsg = data.message || data.error || JSON.stringify(data);
+        messageDiv.textContent = `❌ ${errMsg || 'Registration failed. Please try again.'}`;
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    } catch (error) {
+      // Network or other error
+      messageDiv.className = 'message error';
+      messageDiv.textContent = `❌ Error: Could not connect to server. Make sure Apache and MySQL are running in XAMPP`;
+      console.error('Registration error:', error);
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>

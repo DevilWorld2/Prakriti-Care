@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Login | PrakritiCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to your PrakritiCare user account">
+  <link rel="stylesheet" href="user-login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="logo">
+    <img src="images/logo.png" alt="PrakritiCare Logo">
+    <span>PrakritiCare</span>
+  </div>
+  <nav>
+    <a href="Main Page.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="system.html">System</a>
+    <a href="herbs.html">Herbs</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<!-- ================= USER LOGIN HERO ================= -->
+<section class="login-hero">
+  <h1>User Login</h1>
+  <p>Access your personalized wellness recommendations</p>
+</section>
+
+<!-- ================= USER LOGIN FORM ================= -->
+<section class="login-container">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <h2>Welcome Back</h2>
+      
+      <form class="login-form">
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+
+        <div class="form-group checkbox">
+          <input type="checkbox" id="remember" name="remember">
+          <label for="remember">Remember me</label>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <button type="submit" class="btn primary full-width" id="submitBtn">Login to Dashboard</button>
+
+   
+
+      <div class="auth-links">
+        <p><a href="#forgot-password">Forgot your password?</a></p>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+        <p><a href="login-select.html">Go back</a></p>
+      </div>
+    </div>
+
+    <div class="login-info">
+      <h3>Why Choose PrakritiCare?</h3>
+      <ul>
+        <li>✓ Personalized health recommendations</li>
+        <li>✓ Based on classical Ayurveda</li>
+        <li>✓ AI-powered intelligence</li>
+        <li>✓ Safe and natural solutions</li>
+        <li>✓ Track your wellness journey</li>
+        <li>✓ Expert guidance available</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 PrakritiCare | Ayurvedic Drug Recommendation System</p>
+  <p>Developed using 🌿 Ayurveda & 💻 Technology</p>
+</footer>
+
+<script>
+  // API Base URL
+  const API_BASE_URL = 'http://localhost/Prakriti Care/api';
+
+  // Handle user login form submission
+  document.querySelector('.login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Get form data
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const rememberMe = document.getElementById('remember').checked;
+
+    // Validation
+    const messageDiv = document.getElementById('message');
+    messageDiv.className = 'message';
+    messageDiv.textContent = '';
+
+    if (!email || !password) {
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '❌ Please enter both email and password.';
+      return;
+    }
+
+    // Show loading state
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Logging in...';
+    submitBtn.disabled = true;
+
+    try {
+      // Send login data to backend API
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Login successful
+        messageDiv.className = 'message success';
+        messageDiv.textContent = '✅ Login successful! Redirecting to your dashboard...';
+        
+        // Store token and user info in localStorage
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('userName', data.user.fullname);
+        localStorage.setItem('userEmail', data.user.email);
+        localStorage.setItem('userType', 'user');
+        
+        // If remember me is checked, store email
+        if (rememberMe) {
+          localStorage.setItem('rememberEmail', email);
+        } else {
+          localStorage.removeItem('rememberEmail');
+        }
+        
+        // Redirect to user dashboard after 1.5 seconds
+        setTimeout(() => {
+          window.location.href = 'user-dashboard.html';
+        }, 1500);
+      } else {
+        // Login failed
+        messageDiv.className = 'message error';
+        messageDiv.textContent = `❌ ${data.message || 'Login failed. Please check your credentials.'}`;
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    } catch (error) {
+      // Network or other error
+      messageDiv.className = 'message error';
+      messageDiv.textContent = `❌ Error: Could not connect to server. Make sure Apache and MySQL are running in XAMPP`;
+      console.error('Login error:', error);
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Load remembered email if available
+  window.addEventListener('load', function() {
+    const rememberedEmail = localStorage.getItem('rememberEmail');
+    if (rememberedEmail) {
+      document.getElementById('email').value = rememberedEmail;
+      document.getElementById('remember').checked = true;
+    }
+  });
+</script>
+
+</body>
+</html>

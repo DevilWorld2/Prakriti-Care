@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Herbs | PrakritiCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore Ayurvedic herbs and their therapeutic properties for natural wellness.">
+  <link rel="stylesheet" href="herbs.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="logo">
+    <img src="images/logo.png" alt="PrakritiCare Logo">
+    <span>PrakritiCare</span>
+  </div>
+  <nav>
+    <a href="Main Page.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="system.html">System</a>
+    <a href="herbs.html" class="active">Herbs</a>
+    <a href="contact.html">Contact</a>
+    <a href="login-select.html" class="nav-btn">Login</a>
+  </nav>
+</header>
+
+<!-- ================= HERBS HERO ================= -->
+<section class="herbs-hero">
+  <h1>Ayurvedic Herbs & Botanicals</h1>
+  <p>Nature's Pharmacy for Holistic Wellness</p>
+</section>
+
+<!-- ================= HERBS GRID ================= -->
+<section class="herbs-full">
+  <h2>Our Premium Herb Collection</h2>
+  <div class="search-bar">
+    <input type="text" id="herbSearch" placeholder="Search herbs...">
+    <button id="searchBtn" class="btn small">Search</button>
+  </div>
+  <div class="herbs-grid" id="herbsGrid">
+    <!-- herb cards will be added here dynamically -->
+  </div>
+</section>
+
+<!-- ================= HERBS INFO ================= -->
+<section class="herbs-info">
+  <div class="info-box">
+    <h3>How to Use Ayurvedic Herbs</h3>
+    <p>
+      Ayurvedic herbs are most effective when used appropriately for your unique constitution (Prakriti) 
+      and current imbalances. Always consult with a qualified Ayurveda practitioner before using herbs, 
+      especially if you're pregnant, nursing, or taking medications.
+    </p>
+  </div>
+
+  <div class="info-box">
+    <h3>Quality & Authenticity</h3>
+    <p>
+      We source only premium, organic Ayurvedic herbs that meet stringent quality standards. 
+      All herbs are tested for purity and potency to ensure maximum therapeutic benefits.
+    </p>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta">
+  <h2>Discover Your Ideal Herbal Remedies</h2>
+  <p>Get personalized herb recommendations based on your unique health profile</p><br>
+  <a href="login-select.html" class="btn secondary">Get Recommendations</a>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 PrakritiCare | Ayurvedic Drug Recommendation System</p>
+  <p>Developed using 🌿 Ayurveda & 💻 Technology</p>
+</footer>
+
+<script>
+  const API_BASE_URL = 'http://localhost/Prakriti Care/api';
+
+  async function fetchHerbs(query = '') {
+    let url = `${API_BASE_URL}/herbs`;
+    if (query) {
+      url = `${API_BASE_URL}/herbs/search?query=${encodeURIComponent(query)}`;
+    }
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.success ? data.data || [] : [];
+    } catch (err) {
+      console.error('Herbs fetch error', err);
+      return [];
+    }
+  }
+
+  function renderHerbs(herbs) {
+    const container = document.getElementById('herbsGrid');
+    if (!herbs.length) {
+      container.innerHTML = '<p>No herbs available at this time.</p>';
+      return;
+    }
+    container.innerHTML = herbs.map(h => `
+      <div class="herb-detail-card">
+        <img src="images/${h.image || 'placeholder.png'}" alt="${h.name}" class="herb-image">
+        <h3>${h.name}</h3>
+        <p><strong>Benefits:</strong> ${h.benefits ? h.benefits.join(', ') : h.description || ''}</p>
+        <p><strong>Dosha Balance:</strong> ${Object.keys(h.dosha || {}).filter(d=>h.dosha[d]).join(', ')}</p>
+        <p><strong>Uses:</strong> ${h.usageInstructions || 'N/A'}</p>
+      </div>
+    `).join('');
+  }
+
+  // initial load
+  window.addEventListener('load', async () => {
+    const herbs = await fetchHerbs();
+    renderHerbs(herbs);
+
+    // search handlers
+    document.getElementById('searchBtn').addEventListener('click', async () => {
+      const query = document.getElementById('herbSearch').value.trim();
+      const results = await fetchHerbs(query);
+      renderHerbs(results);
+    });
+
+    document.getElementById('herbSearch').addEventListener('keypress', async (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('searchBtn').click();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
